@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: AI_project
+Version: 0.1.0
+Author: Sushmitha
+Author-email: cvsushi14@gmail.com
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: seaborn

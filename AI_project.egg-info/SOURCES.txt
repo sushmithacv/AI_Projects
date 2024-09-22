@@ -1,0 +1,7 @@
+README.md
+setup.py
+AI_project.egg-info/PKG-INFO
+AI_project.egg-info/SOURCES.txt
+AI_project.egg-info/dependency_links.txt
+AI_project.egg-info/requires.txt
+AI_project.egg-info/top_level.txt
