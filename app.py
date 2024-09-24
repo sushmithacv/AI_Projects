@@ -4,7 +4,7 @@ import pickle
 from flask_cors import CORS
 
 # Load the models and scalers
-model = pickle.load(open('decision_tree_model.pkl', 'rb'))
+model = pickle.load(open('model.pkl', 'rb'))
 minmax_scaler = pickle.load(open('minmaxscaler.pkl', 'rb'))
 standard_scaler = pickle.load(open('standard_scaler.pkl', 'rb'))  # Load the StandardScaler
 
