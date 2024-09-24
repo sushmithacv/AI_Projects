@@ -3,3 +3,4 @@ pandas
 seaborn
 gunicorn
 Flask
+flask-cors
