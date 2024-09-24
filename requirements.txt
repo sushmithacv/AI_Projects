@@ -4,3 +4,5 @@ seaborn
 gunicorn
 Flask
 flask-cors
+scikit-learn
+
