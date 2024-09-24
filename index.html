@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Crop Recommendation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <style>
+        body {
+            background: #f4f4f9;
+            font-family: 'Roboto', sans-serif;
+        }
+        .navbar {
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 40px;
+            max-width: 900px;
+        }
+        h1 {
+            color: #28a745;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .result-text {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">🌱 Crop Recommendation</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled">About</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container">
+        <h1>Crop Recommendation System 🌱</h1>
+
+        <!-- Prediction form -->
+        <form id="cropForm">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="Nitrogen" class="form-label">Nitrogen</label>
+                    <input type="number" id="Nitrogen" class="form-control" placeholder="Enter Nitrogen level" required step="0.01">
+                </div>
+                <div class="col-md-4">
+                    <label for="Phosphorus" class="form-label">Phosphorus</label>
+                    <input type="number" id="Phosphorus" class="form-control" placeholder="Enter Phosphorus level" required step="0.01">
+                </div>
+                <div class="col-md-4">
+                    <label for="Potassium" class="form-label">Potassium</label>
+                    <input type="number" id="Potassium" class="form-control" placeholder="Enter Potassium level" required step="0.01">
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <label for="Temperature" class="form-label">Temperature (°C)</label>
+                    <input type="number" id="Temperature" class="form-control" placeholder="Enter Temperature" required step="0.01">
+                </div>
+                <div class="col-md-4">
+                    <label for="Humidity" class="form-label">Humidity (%)</label>
+                    <input type="number" id="Humidity" class="form-control" placeholder="Enter Humidity" required step="0.01">
+                </div>
+                <div class="col-md-4">
+                    <label for="Ph" class="form-label">pH Value</label>
+                    <input type="number" id="Ph" class="form-control" placeholder="Enter pH value" required step="0.01">
+                </div>
+            </div>
+
+            <div class="row mt-3">
+                <div class="col-md-4">
+                    <label for="Rainfall" class="form-label">Rainfall (mm)</label>
+                    <input type="number" id="Rainfall" class="form-control" placeholder="Enter Rainfall" required step="0.01">
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-md-12 text-center">
+                    <button type="submit" class="btn btn-lg btn-success">Get Recommendation</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Display Result -->
+        <h2 id="result" class="result-text"></h2>
+    </div>
+
+    <script>
+        document.getElementById('cropForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting the default way
+
+            // Gather the input values
+            const nitrogen = document.getElementById('Nitrogen').value;
+            const phosphorus = document.getElementById('Phosphorus').value;
+            const potassium = document.getElementById('Potassium').value;
+            const temperature = document.getElementById('Temperature').value;
+            const humidity = document.getElementById('Humidity').value;
+            const ph = document.getElementById('Ph').value;
+            const rainfall = document.getElementById('Rainfall').value;
+
+            // Prepare the data to be sent
+            const data = {
+                Nitrogen: nitrogen,
+                Phosphorus: phosphorus,
+                Potassium: potassium,
+                Temperature: temperature,
+                Humidity: humidity,
+                Ph: ph,
+                Rainfall: rainfall
+            };
+
+            // Send a POST request to the backend
+            fetch('https://<your-render-app-url>/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the result
+                document.getElementById('result').innerText = data.message || "Error predicting crop.";
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = "An error occurred. Please try again.";
+            });
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+</body>
+</html>
